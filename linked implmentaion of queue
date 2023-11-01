@@ -1,0 +1,105 @@
+#include<stdio.h>
+#include <stdlib.h>
+
+#define MAXQUEUE 5
+#define TRUE 1
+#define FALSE 0
+
+typedef char queueElement;
+
+typedef struct queue{
+
+   queueElement items[MAXQUEUE];
+   int front;
+   int rear;
+   int count;
+
+}Queue;
+
+void createQueue(Queue *q){
+
+    q->count=0;
+    q->front=0;
+    q->rear=-1;
+
+}
+
+int IsQueueEmpty(Queue *q){
+
+    if(q->rear < q->front)
+        return TRUE;
+
+    else
+        return FALSE;
+
+}
+
+int IsQueueFull(Queue *q){
+
+    if(q->rear == MAXQUEUE-1)
+        return TRUE;
+
+    else
+        return FALSE;
+
+}
+
+void append(Queue *q,queueElement x){
+
+    if(IsQueueFull(q)){
+       printf("queue full\n");
+       exit(1);
+    }
+
+    else{
+        q->items[++(q->rear)]=x;
+        q->count++;
+    }
+
+}
+
+char serve(Queue *q){
+
+    if(IsQueueEmpty(q)){
+       printf("queue is empty\n");
+       exit(1);
+    }
+
+    else{
+        char removed =q->items[++(q->front)];
+        q->front++;
+        q->count--;
+        return removed;
+    }
+
+}
+
+void main(){
+
+    Queue s;
+    createQueue(&s);
+
+    char str[MAXQUEUE];
+    printf("enter 5 characters string:");
+    scanf("%s",str);
+    for(int i=0;i<MAXQUEUE;i++){
+        append(&s,str[i]);
+    }
+
+
+    printf("\nRemoved elements: ");
+
+    for (int i = 0; i < 3; i++) {
+        printf("%c ", serve(&s));
+    }
+
+    printf("\nSize of the queue: %d\n", s.count);
+
+    append(&s, 'A');
+
+    printf("\nContents of the queue after inserting 'A': ");
+    for (int i = s.front; i <= s.rear; i++) {
+        printf("%c ", s.items[i]);
+    }
+
+}
