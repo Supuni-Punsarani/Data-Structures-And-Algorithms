@@ -1,0 +1,103 @@
+#include<stdio.h>
+#include<stdlib.h>
+
+typedef int queueElement;
+
+typedef struct node{
+
+    queueElement entry;
+    struct node *next;
+
+}queueNode;
+
+typedef enum {
+
+    TRUE,FALSE
+
+}Boolean;
+
+typedef struct
+{
+
+    queueNode *front;
+    queueNode *rear;
+    int count;
+    Boolean full;
+
+}Queue;
+
+void createQueue(Queue *q){
+
+     q->count=0;
+     q->full=FALSE;
+     q->front=q->rear=NULL;
+
+}
+
+Boolean IsQueueEmpty(const Queue *q){
+
+     return (q->front== NULL && q->rear==NULL);
+
+}
+
+Boolean IsQueueFull(const Queue *q){
+
+     return (q->full);
+
+}
+
+void serve(queueElement *x,Queue *q){
+
+     queueNode *np;
+
+     if(IsQueueEmpty(q)){
+        printf("queue is empty");
+        exit(1);
+     }
+
+     else{
+        *x=q->front->entry;
+        np=q->front;
+        q->front=q->front->next;
+        q->count--;
+
+        if(q->front==NULL)
+            q->rear=NULL;
+
+        free(np);
+     }
+}
+
+void append(queueElement x,Queue *q){
+
+       queueNode *np;
+       np=(queueNode*)malloc (sizeof(queueNode));
+       if(np==NULL){
+        printf("not enough memory");
+        q->full=TRUE;
+       }
+
+       else{
+            np->entry=x;
+            np->next=NULL;
+            if(IsQueueEmpty(q))
+                q->front=q->rear=np;
+            else
+                q->rear->next=np;
+
+       }
+
+       q->count++;
+
+}
+
+void main(){
+
+    Queue queue={0};
+    createQueue(&queue);
+    append(6,&queue);
+    int x;
+    serve(&x,&queue);
+    printf("served value is:%d",x);
+
+}
