@@ -1,7 +1,7 @@
 #include<stdio.h>
 #include <stdlib.h>
 
-#define MAXQUEUE 5
+#define MAXQUEUE 6
 #define TRUE 1
 #define FALSE 0
 
